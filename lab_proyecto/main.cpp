@@ -1,12 +1,3 @@
-//Semestre 2017 - 2
-//************************************************************//
-//************************************************************//
-//************** Alumno (s): *********************************//
-//*************											******//
-//*************											******//
-//************************************************************//
-//************************************************************//
-
 #include "texture.h"
 #include "figuras.h"
 #include "Camera.h"
@@ -116,7 +107,7 @@ void InitGL(GLvoid)     // Inicializamos parametros
 	llanta._3dsLoad("k_rueda.3ds");
 
 
-	objCamera.Position_Camera(10, 2.5f, 13, 10, 2.5f, 10, 0, 1, 0);
+	objCamera.Position_Camera(20, 15.0f, 20, 1, 1, 1, 0, 1, 0);
 
 }
 
@@ -150,19 +141,123 @@ void display(void)   // Creamos la funcion donde se dibuja
 
 
 	glPushMatrix();
-	glPushMatrix(); //Creamos cielo
-	glDisable(GL_LIGHTING);
-	glTranslatef(0, 60, 0);
-	fig1.skybox(130.0, 130.0, 130.0, text_abajo.GLindex, text_arriba.GLindex, text_izquierda.GLindex, text_derecha.GLindex, text_frente.GLindex, text_atras.GLindex); //textura del cubo
-	glEnable(GL_LIGHTING);
-	glPopMatrix();
+		glPushMatrix(); //Creamos cielo
+			glDisable(GL_LIGHT1);
+			fig1.skybox(180.0, 520.0, 520.0, /*text_abajo.GLindex*/0, text_arriba.GLindex, text_izquierda.GLindex, text_derecha.GLindex, text_frente.GLindex, text_atras.GLindex); //textura del cubo
+			glEnable(GL_LIGHT1);
+		glPopMatrix();
+		//Para que el comando glColor funcione con iluminacion
+		glEnable(GL_COLOR_MATERIAL);
+		//glColor3f(1.0, 1.0, 1.0);
 
-	//Para que el comando glColor funcione con iluminacion
-	glEnable(GL_COLOR_MATERIAL);
+		glTranslatef(0, -90+22, 0);
 
-	glColor3f(1.0, 1.0, 1.0);
+		glPushMatrix(); //Pared atrás
+			fig1.prisma(44, 62, 0.2, 0);
+		glPopMatrix();
 
-	glPopMatrix();
+		glPushMatrix(); //Pared frente
+			glTranslatef(0, 0, -40);
+			fig1.prisma(44, 62, 0.2, 0);
+		glPopMatrix();
+
+		glPushMatrix(); //Pared izq
+			glTranslatef(-31, 0, -20);
+			glRotatef(-90, 0, 1, 0);
+			fig1.prisma(44, 40, 0.2, 0);
+		glPopMatrix();
+
+		glPushMatrix(); //Pared der
+			glTranslatef(31, 0, -20);
+			glRotatef(90, 0, 1, 0);
+			fig1.prisma(44, 40, 0.2, 0);
+		glPopMatrix();
+
+		glPushMatrix(); //Teja frente
+			glTranslatef(0, 22 + 7.5, -10);
+			glRotatef(90 + 36.86989765, 1, 0, 0);
+			fig1.prisma(25, 62, 0.2, 0);
+		glPopMatrix();
+
+		glPushMatrix(); //Teja atrás
+			glTranslatef(0, 22 + 7.5, -30);
+			glRotatef(180, 0, 1, 0);
+			glRotatef(90 + 36.86989765, 1, 0, 0);
+			fig1.prisma(25, 62, 0.2, 0);
+		glPopMatrix();
+
+		glPushMatrix();
+			//glScalef(0.5, 0.5, 1);
+			//glScalef(28 / 62, 15 / 44, 1);
+			glTranslatef(31 + 14, -22 + 12.5,0);
+			glScalef(0.4516129, 0.5681818181, 1);
+			//glScalef(28 / 62, 25 / 44, 1);
+
+			glPushMatrix();
+				glPushMatrix(); //Pared atrás cochera
+				fig1.prisma(44, 62, 0.2, 0);
+				glPopMatrix();
+
+				glPushMatrix(); //Pared frente cochera
+				glTranslatef(0, 0, -40);
+				fig1.prisma(44, 62, 0.2, 0);
+				glPopMatrix();
+
+				glPushMatrix(); //Pared izq cochera
+				glTranslatef(-31, 0, -20);
+				glRotatef(-90, 0, 1, 0);
+				fig1.prisma(44, 40, 0.2, 0);
+				glPopMatrix();
+
+				glPushMatrix(); //Pared der cochera
+				glTranslatef(31, 0, -20);
+				glRotatef(90, 0, 1, 0);
+				fig1.prisma(44, 40, 0.2, 0);
+				glPopMatrix();
+
+				glPushMatrix(); //Teja frente cochera
+				glTranslatef(0, 22 + 7.5, -10);
+				glRotatef(90 + 36.86989765, 1, 0, 0);
+				fig1.prisma(25, 62, 0.2, 0);
+				glPopMatrix();
+
+				glPushMatrix(); //Teja atrás cochera
+				glTranslatef(0, 22 + 7.5, -30);
+				glRotatef(180, 0, 1, 0);
+				glRotatef(90 + 36.86989765, 1, 0, 0);
+				fig1.prisma(25, 62, 0.2, 0);
+				glPopMatrix();
+
+			glPopMatrix();
+		glPopMatrix();
+
+		//Plano cartesiano
+		glColor3f(0, 0, 0);
+
+		fig1.prisma(1, 1, 1, 0);
+		
+
+		glPushMatrix();
+		glTranslatef(0, 25, 0);
+		glColor3f(1, 0, 0);
+		fig1.prisma(50, 0.5, 0.5, 0); //x
+		glPopMatrix();
+
+		glPushMatrix();
+		glTranslatef(25, 0, 0);
+		glColor3f(0, 1, 0);
+		fig1.prisma(0.5, 50, 0.5, 0); //x
+		glPopMatrix();
+
+		glPushMatrix();
+		glTranslatef(0, 0, 25);
+		glColor3f(0, 0, 1);
+		fig1.prisma(0.5, 0.5, 50, 0); //x
+		glPopMatrix();
+
+		glColor3f(1, 1, 1);
+
+
 	glPopMatrix();
 
 	glDisable(GL_TEXTURE_2D);
@@ -212,7 +307,7 @@ void reshape(int width, int height)   // Creamos funcion Reshape
 
 	// Tipo de Vista
 
-	glFrustum(-0.1, 0.1, -0.1, 0.1, 0.1, 170.0);
+	glFrustum(-0.1, 0.1, -0.1, 0.1, 0.1, 700.0);
 
 	glMatrixMode(GL_MODELVIEW);							// Seleccionamos Modelview Matrix
 	glLoadIdentity();
