@@ -24,12 +24,17 @@ GLfloat m_spec1[] = { 0.0, 0.0, 0.0, 1.0 };				// Specular Light Values
 GLfloat m_amb1[] = { 0.0, 0.0, 0.0, 1.0 };				// Ambiental Light Values
 GLfloat m_s1[] = { 18 };
 
+//texturas skybox
 CTexture text_arriba;
 CTexture text_abajo;
 CTexture text_izquierda;	
 CTexture text_derecha;	
 CTexture text_frente;	
-CTexture text_atras;	
+CTexture text_atras;
+
+//texturas casa
+CTexture ladrillo;
+CTexture teja;
 
 CFiguras fig1;
 CFiguras fig2;
@@ -100,6 +105,14 @@ void InitGL(GLvoid)     // Inicializamos parametros
 	text_abajo.BuildGLTexture();
 	text_abajo.ReleaseImage();
 
+	ladrillo.LoadTGA("lad.tga"); //textura de la fachada
+	ladrillo.BuildGLTexture();
+	ladrillo.ReleaseImage();
+
+	teja.LoadTGA("tej.tga"); //textura de la fachada
+	teja.BuildGLTexture();
+	teja.ReleaseImage();
+
 	//Carga de Figuras
 	kit._3dsLoad("kitt.3ds");
 	//kit.VertexNormals();
@@ -107,7 +120,7 @@ void InitGL(GLvoid)     // Inicializamos parametros
 	llanta._3dsLoad("k_rueda.3ds");
 
 
-	objCamera.Position_Camera(20, 15.0f, 20, 1, 1, 1, 0, 1, 0);
+	objCamera.Position_Camera(0, 0, 50, 0, -50, -50, 0, 1, 0);
 
 }
 
@@ -142,100 +155,20 @@ void display(void)   // Creamos la funcion donde se dibuja
 
 	glPushMatrix();
 		glPushMatrix(); //Creamos cielo
-			glDisable(GL_LIGHT1);
-			fig1.skybox(180.0, 520.0, 520.0, /*text_abajo.GLindex*/0, text_arriba.GLindex, text_izquierda.GLindex, text_derecha.GLindex, text_frente.GLindex, text_atras.GLindex); //textura del cubo
-			glEnable(GL_LIGHT1);
+			glDisable(GL_LIGHTING);
+			glTranslatef(0, 90 - (22 * 0.8), 0);
+			fig1.skybox(180.0, 520.0, 520.0, text_abajo.GLindex, text_arriba.GLindex, text_izquierda.GLindex, text_derecha.GLindex, text_frente.GLindex, text_atras.GLindex); //textura del cubo
+			glEnable(GL_LIGHTING);
 		glPopMatrix();
 		//Para que el comando glColor funcione con iluminacion
 		glEnable(GL_COLOR_MATERIAL);
 		//glColor3f(1.0, 1.0, 1.0);
 
-		glTranslatef(0, -90+22, 0);
-
-		glPushMatrix(); //Pared atrás
-			fig1.prisma(44, 62, 0.2, 0);
-		glPopMatrix();
-
-		glPushMatrix(); //Pared frente
-			glTranslatef(0, 0, -40);
-			fig1.prisma(44, 62, 0.2, 0);
-		glPopMatrix();
-
-		glPushMatrix(); //Pared izq
-			glTranslatef(-31, 0, -20);
-			glRotatef(-90, 0, 1, 0);
-			fig1.prisma(44, 40, 0.2, 0);
-		glPopMatrix();
-
-		glPushMatrix(); //Pared der
-			glTranslatef(31, 0, -20);
-			glRotatef(90, 0, 1, 0);
-			fig1.prisma(44, 40, 0.2, 0);
-		glPopMatrix();
-
-		glPushMatrix(); //Teja frente
-			glTranslatef(0, 22 + 7.5, -10);
-			glRotatef(90 + 36.86989765, 1, 0, 0);
-			fig1.prisma(25, 62, 0.2, 0);
-		glPopMatrix();
-
-		glPushMatrix(); //Teja atrás
-			glTranslatef(0, 22 + 7.5, -30);
-			glRotatef(180, 0, 1, 0);
-			glRotatef(90 + 36.86989765, 1, 0, 0);
-			fig1.prisma(25, 62, 0.2, 0);
-		glPopMatrix();
-
-		glPushMatrix();
-			//glScalef(0.5, 0.5, 1);
-			//glScalef(28 / 62, 15 / 44, 1);
-			glTranslatef(31 + 14, -22 + 12.5,0);
-			glScalef(0.4516129, 0.5681818181, 1);
-			//glScalef(28 / 62, 25 / 44, 1);
-
-			glPushMatrix();
-				glPushMatrix(); //Pared atrás cochera
-				fig1.prisma(44, 62, 0.2, 0);
-				glPopMatrix();
-
-				glPushMatrix(); //Pared frente cochera
-				glTranslatef(0, 0, -40);
-				fig1.prisma(44, 62, 0.2, 0);
-				glPopMatrix();
-
-				glPushMatrix(); //Pared izq cochera
-				glTranslatef(-31, 0, -20);
-				glRotatef(-90, 0, 1, 0);
-				fig1.prisma(44, 40, 0.2, 0);
-				glPopMatrix();
-
-				glPushMatrix(); //Pared der cochera
-				glTranslatef(31, 0, -20);
-				glRotatef(90, 0, 1, 0);
-				fig1.prisma(44, 40, 0.2, 0);
-				glPopMatrix();
-
-				glPushMatrix(); //Teja frente cochera
-				glTranslatef(0, 22 + 7.5, -10);
-				glRotatef(90 + 36.86989765, 1, 0, 0);
-				fig1.prisma(25, 62, 0.2, 0);
-				glPopMatrix();
-
-				glPushMatrix(); //Teja atrás cochera
-				glTranslatef(0, 22 + 7.5, -30);
-				glRotatef(180, 0, 1, 0);
-				glRotatef(90 + 36.86989765, 1, 0, 0);
-				fig1.prisma(25, 62, 0.2, 0);
-				glPopMatrix();
-
-			glPopMatrix();
-		glPopMatrix();
-
 		//Plano cartesiano
 		glColor3f(0, 0, 0);
 
 		fig1.prisma(1, 1, 1, 0);
-		
+
 
 		glPushMatrix();
 		glTranslatef(0, 25, 0);
@@ -256,6 +189,126 @@ void display(void)   // Creamos la funcion donde se dibuja
 		glPopMatrix();
 
 		glColor3f(1, 1, 1);
+		//Traslación y escalamiento global
+		//glTranslatef(0, -90+ (22*0.8), 0);
+		glScalef(1, 0.8, 1);
+
+		glPushMatrix(); //Piso primer nivel
+			glTranslatef(0, 0, -20);
+			glRotatef(90, 1, 0, 0);
+			fig1.prisma(40, 62, 0.2, ladrillo.GLindex);
+		glPopMatrix();
+
+		glPushMatrix(); //Techo primer nivel
+			glTranslatef(0, 22, -20);
+			glRotatef(90, 1, 0, 0);
+			fig1.prisma(40, 62, 0.2, ladrillo.GLindex);
+		glPopMatrix();
+
+		glPushMatrix(); //División vertical primer nivel
+			glTranslatef(0, 11, -20);
+			glRotatef(90, 0, 1, 0);
+			fig1.prisma(22, 40, 0.2, ladrillo.GLindex);
+		glPopMatrix();
+
+		glPushMatrix(); //Tapiz izq
+			glTranslatef(-31 + 0.2, 11, -20);
+			glRotatef(90, 0, 1, 0);
+			fig1.prisma(22, 40, 0.2, 0);
+		glPopMatrix();
+
+		glPushMatrix(); //Tapiz atrás
+			glTranslatef(-15.5, 11, -40+0.2);
+			fig1.prisma(22, 31, 0.2, 0);
+		glPopMatrix();
+
+		glPushMatrix(); //Tapíz frente
+			glTranslatef(-15.5, 11, -0.2);
+			fig1.prisma(22, 31, 0.2, 0);
+		glPopMatrix();
+
+
+
+		glPushMatrix(); //Pared frente
+			fig1.prisma(44, 62, 0.2, ladrillo.GLindex);
+		glPopMatrix();
+
+		glPushMatrix(); //Pared atrás
+			glTranslatef(0, 0, -40);
+			fig1.prisma(44, 62, 0.2, ladrillo.GLindex);
+		glPopMatrix();
+
+		glPushMatrix(); //Pared izq
+			glTranslatef(-31, 0, -20);
+			glRotatef(-90, 0, 1, 0);
+			fig1.prisma(44, 40, 0.2, ladrillo.GLindex);
+		glPopMatrix();
+
+		glPushMatrix(); //Pared der
+			glTranslatef(31, 0, -20);
+			glRotatef(90, 0, 1, 0);
+			fig1.prisma(44, 40, 0.2, ladrillo.GLindex);
+		glPopMatrix();
+
+		glPushMatrix(); //Teja frente
+			glTranslatef(0, 22 + 7.5, -10);
+			glRotatef(90 + 36.86989765, 1, 0, 0);
+			fig1.prisma(25, 62, 0.2, teja.GLindex);
+		glPopMatrix();
+
+		glPushMatrix(); //Teja atrás
+			glTranslatef(0, 22 + 7.5, -30);
+			glRotatef(180, 0, 1, 0);
+			glRotatef(90 + 36.86989765, 1, 0, 0);
+			fig1.prisma(25, 62, 0.2, teja.GLindex);
+		glPopMatrix();
+
+		glPushMatrix();
+			//glScalef(0.5, 0.5, 1);
+			//glScalef(28 / 62, 15 / 44, 1);
+			glTranslatef(31 + 14, -22 + 12.5,0);
+			glScalef(0.4516129, 0.5681818181, 1);
+			//glScalef(28 / 62, 25 / 44, 1);
+
+			glPushMatrix();
+				glPushMatrix(); //Pared atrás cochera
+				fig1.prisma(44, 62, 0.2, ladrillo.GLindex);
+				glPopMatrix();
+
+				glPushMatrix(); //Pared frente cochera
+				glTranslatef(0, 0, -40);
+				fig1.prisma(44, 62, 0.2, ladrillo.GLindex);
+				glPopMatrix();
+
+				glPushMatrix(); //Pared izq cochera
+				glTranslatef(-31, 0, -20);
+				glRotatef(-90, 0, 1, 0);
+				fig1.prisma(44, 40, 0.2, ladrillo.GLindex);
+				glPopMatrix();
+
+				glPushMatrix(); //Pared der cochera
+				glTranslatef(31, 0, -20);
+				glRotatef(90, 0, 1, 0);
+				fig1.prisma(44, 40, 0.2, ladrillo.GLindex);
+				glPopMatrix();
+
+				glPushMatrix(); //Teja frente cochera
+				glTranslatef(0, 22 + 7.5, -10);
+				glRotatef(90 + 36.86989765, 1, 0, 0);
+				fig1.prisma(25, 62, 0.2, teja.GLindex);
+				glPopMatrix();
+
+				glPushMatrix(); //Teja atrás cochera
+				glTranslatef(0, 22 + 7.5, -30);
+				glRotatef(180, 0, 1, 0);
+				glRotatef(90 + 36.86989765, 1, 0, 0);
+				fig1.prisma(25, 62, 0.2, teja.GLindex);
+				glPopMatrix();
+
+			glPopMatrix();
+		glPopMatrix();
+
+
 
 
 	glPopMatrix();
@@ -318,22 +371,22 @@ void keyboard(unsigned char key, int x, int y)  // Create Keyboard Function
 	switch (key) {
 	case 'w':   //Movimientos de camara
 	case 'W':
-		objCamera.Move_Camera(CAMERASPEED + 0.2);
+		objCamera.Move_Camera(CAMERASPEED * 0.1);
 		break;
 
 	case 's':
 	case 'S':
-		objCamera.Move_Camera(-(CAMERASPEED + 0.2));
+		objCamera.Move_Camera(-(CAMERASPEED * 0.1));
 		break;
 
 	case 'a':
 	case 'A':
-		objCamera.Strafe_Camera(-(CAMERASPEED + 0.4));
+		objCamera.Strafe_Camera(-(CAMERASPEED * 0.1));
 		break;
 
 	case 'd':
 	case 'D':
-		objCamera.Strafe_Camera(CAMERASPEED + 0.4);
+		objCamera.Strafe_Camera(CAMERASPEED * 0.1);
 		break;
 
 	case ' ':		//Poner algo en movimiento
