@@ -24,6 +24,10 @@ GLfloat m_spec1[] = { 0.0, 0.0, 0.0, 1.0 };				// Specular Light Values
 GLfloat m_amb1[] = { 0.0, 0.0, 0.0, 1.0 };				// Ambiental Light Values
 GLfloat m_s1[] = { 18 };
 
+//Para el globo//////
+GLUquadric *quad;
+/////////////
+
 //texturas skybox
 CTexture text_arriba;
 CTexture text_abajo;
@@ -38,6 +42,7 @@ CTexture teja;
 CTexture tapiz;
 CTexture piso;
 CTexture tapete;
+CTexture mapa;
 
 CFiguras fig1;
 CFiguras fig2;
@@ -49,15 +54,7 @@ CFiguras fig6;
 CFiguras fig7; //Para el monito
 
 //Figuras de 3D Studio
-CModel kit;
-CModel llanta;
-
-//Animación del coche
-float movKit = 0.0;
-bool g_fanimacion = false;
-boolean yallegue = false;
-
-
+CModel soporte;
 
 void InitGL(GLvoid)     // Inicializamos parametros
 {
@@ -66,9 +63,9 @@ void InitGL(GLvoid)     // Inicializamos parametros
 	glEnable(GL_TEXTURE_2D);
 
 	glShadeModel(GL_SMOOTH);
+	//glLightfv(GL_LIGHT1, GL_AMBIENT, Position2);
 	glLightfv(GL_LIGHT1, GL_POSITION, Position);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, Diffuse);
-	glEnable(GL_LIGHTING);
+	//glLightfv(GL_LIGHT2, GL_DIFFUSE, Diffuse);
 	glEnable(GL_LIGHT0);
 
 	glEnable(GL_COLOR_MATERIAL);
@@ -128,14 +125,11 @@ void InitGL(GLvoid)     // Inicializamos parametros
 	tapete.BuildGLTexture();
 	tapete.ReleaseImage();
 
-	//Carga de Figuras
-	kit._3dsLoad("kitt.3ds");
-	//kit.VertexNormals();
-
-	llanta._3dsLoad("k_rueda.3ds");
-
-
-	objCamera.Position_Camera(0, 0, 50, 0, -50, -50, 0, 1, 0);
+	mapa.LoadTGA("map.tga"); //textura de la fachada
+	mapa.BuildGLTexture();
+	mapa.ReleaseImage();
+	
+	objCamera.Position_Camera(-10, 15, 50, -10, 0, 0, 0, 1, 0);
 
 }
 
@@ -184,7 +178,7 @@ void display(void)   // Creamos la funcion donde se dibuja
 
 		fig1.prisma(1, 1, 1, 0);
 
-
+		/*
 		glPushMatrix();
 		glTranslatef(0, 25, 0);
 		glColor3f(1, 0, 0);
@@ -202,7 +196,7 @@ void display(void)   // Creamos la funcion donde se dibuja
 		glColor3f(0, 0, 1);
 		fig1.prisma(0.5, 0.5, 50, 0); //x
 		glPopMatrix();
-
+		*/
 		glColor3f(1, 1, 1);
 		//Traslación y escalamiento global
 		//glTranslatef(0, -90+ (22*0.8), 0);
@@ -211,6 +205,7 @@ void display(void)   // Creamos la funcion donde se dibuja
 		glEnable(GL_ALPHA_TEST);
 		glAlphaFunc(GL_GREATER, 0.1f);
 
+
 		glPushMatrix(); //tapete
 			glTranslatef(-15.5, 0.1, -15);
 			glRotatef(90, 1, 0, 0);
@@ -218,6 +213,90 @@ void display(void)   // Creamos la funcion donde se dibuja
 		glPopMatrix();
 
 		glDisable(GL_ALPHA_TEST);
+
+		glPushMatrix(); //globo
+			
+			glTranslatef(-28,10,-38);
+			glRotatef(-90, 1, 0, 0);
+			quad = gluNewQuadric();
+			glEnable(GL_TEXTURE_2D);
+
+			glBindTexture(GL_TEXTURE_2D, mapa.GLindex);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			gluQuadricTexture(quad, 1);
+			
+			gluSphere(quad, 1.5, 20, 20);
+		glPopMatrix();
+
+		glPushMatrix(); //baúl
+			glTranslatef(-17.5, 1.775, -35);
+			//glScalef(0.01, 0.003, 0.003);
+			glRotatef(90, 0, 1, 0);
+			fig1.prisma(3.55, 6, 3.3, 0);
+		glPopMatrix();
+
+		glPushMatrix(); //corbel1.1
+			glTranslatef(-31+1, 14.0, -8);
+			glScalef(0.01, 0.003, 0.003);
+			glRotatef(90, 0, 1, 0);
+			soporte.GLrender(NULL, _SHADED, 1.0);  //_WIRED O _POINTS
+		glPopMatrix();
+
+		glPushMatrix(); //corbel1.2
+			glTranslatef(-31 + 1, 14.0, -16);
+			glScalef(0.01, 0.003, 0.003);
+			glRotatef(90, 0, 1, 0);
+			soporte.GLrender(NULL, _SHADED, 1.0);  //_WIRED O _POINTS
+		glPopMatrix();
+
+		glPushMatrix(); //corbel2.1
+			glTranslatef(-31 + 1, 16.5, -8);
+			glScalef(0.01, 0.003, 0.003);
+			glRotatef(90, 0, 1, 0);
+			soporte.GLrender(NULL, _SHADED, 1.0);  //_WIRED O _POINTS
+		glPopMatrix();
+
+		glPushMatrix(); //corbel2.2
+			glTranslatef(-31 + 1, 16.5, -16);
+			glScalef(0.01, 0.003, 0.003);
+			glRotatef(90, 0, 1, 0);
+			soporte.GLrender(NULL, _SHADED, 1.0);  //_WIRED O _POINTS
+		glPopMatrix();
+
+		glPushMatrix(); //corbel3.1
+			glTranslatef(-31 + 1, 11.5, -8);
+			glScalef(0.01, 0.003, 0.003);
+			glRotatef(90, 0, 1, 0);
+			soporte.GLrender(NULL, _SHADED, 1.0);  //_WIRED O _POINTS
+		glPopMatrix();
+
+		glPushMatrix(); //corbel3.2
+			glTranslatef(-31 + 1, 11.5, -16);
+			glScalef(0.01, 0.003, 0.003);
+			glRotatef(90, 0, 1, 0);
+			soporte.GLrender(NULL, _SHADED, 1.0);  //_WIRED O _POINTS
+		glPopMatrix();
+
+		glPushMatrix(); //repisa1
+			glTranslatef(-31+1.5, 15, -12);
+			glRotatef(90, 0, 1, 0);
+			glRotatef(90, 1, 0, 0);
+			fig1.prisma(3, 10, 0.5, 0);
+		glPopMatrix();
+
+		glPushMatrix(); //repisa2
+			glTranslatef(-31+1.5, 17.5, -12);
+			glRotatef(90, 0, 1, 0);
+			glRotatef(90, 1, 0, 0);
+			fig1.prisma(3, 10, 0.5, 0);
+		glPopMatrix();
+
+		glPushMatrix(); //repisa3
+			glTranslatef(-31+1.5, 12.5, -12);
+			glRotatef(90, 0, 1, 0);
+			glRotatef(90, 1, 0, 0);
+			fig1.prisma(3, 10, 0.5, 0);
+		glPopMatrix();
 
 		glPushMatrix(); //Piso primer nivel
 			glTranslatef(0, 0, -20);
@@ -348,30 +427,6 @@ void display(void)   // Creamos la funcion donde se dibuja
 
 }
 
-void animacion()
-{
-	fig3.text_izq -= 0.001;
-	fig3.text_der -= 0.001;
-	if (fig3.text_izq < -1)
-		fig3.text_izq = 0;
-	if (fig3.text_der < 0)
-		fig3.text_der = 1;
-
-	if (g_fanimacion && movKit <= 100 && yallegue == false)
-	{
-		movKit += 1.0;
-		if (movKit == 100)
-			yallegue = true;
-	}
-
-	if (yallegue == true && movKit >= 0) {
-		movKit -= 1.0;
-		if (movKit == 0)
-			yallegue = false;
-	}
-	glutPostRedisplay();
-}
-
 void reshape(int width, int height)   // Creamos funcion Reshape
 {
 	if (height == 0)										// Prevenir division entre cero
@@ -397,26 +452,22 @@ void keyboard(unsigned char key, int x, int y)  // Create Keyboard Function
 	switch (key) {
 	case 'w':   //Movimientos de camara
 	case 'W':
-		objCamera.Move_Camera(CAMERASPEED * 0.1);
+		objCamera.Move_Camera(CAMERASPEED * 0.15);
 		break;
 
 	case 's':
 	case 'S':
-		objCamera.Move_Camera(-(CAMERASPEED * 0.1));
+		objCamera.Move_Camera(-(CAMERASPEED * 0.15));
 		break;
 
 	case 'a':
 	case 'A':
-		objCamera.Strafe_Camera(-(CAMERASPEED * 0.1));
+		objCamera.Strafe_Camera(-(CAMERASPEED * 0.15));
 		break;
 
 	case 'd':
 	case 'D':
-		objCamera.Strafe_Camera(CAMERASPEED * 0.1);
-		break;
-
-	case ' ':		//Poner algo en movimiento
-		g_fanimacion ^= true; //Activamos/desactivamos la animacíon
+		objCamera.Strafe_Camera(CAMERASPEED * 0.15);
 		break;
 
 	case 27:        // Cuando Esc es presionado...
@@ -462,7 +513,6 @@ void arrow_keys(int a_keys, int x, int y)  // Funcion para manejo de teclas espe
 	glutPostRedisplay();
 }
 
-
 int main(int argc, char** argv)   // Main Function
 {
 	glutInit(&argc, argv); // Inicializamos OpenGL
@@ -476,7 +526,7 @@ int main(int argc, char** argv)   // Main Function
 	glutReshapeFunc(reshape);	//Indicamos a Glut función en caso de cambio de tamano
 	glutKeyboardFunc(keyboard);	//Indicamos a Glut función de manejo de teclado
 	glutSpecialFunc(arrow_keys);	//Otras
-	glutIdleFunc(animacion);
+	//glutIdleFunc(animacion);
 	glutMainLoop();          // 
 
 	return 0;
