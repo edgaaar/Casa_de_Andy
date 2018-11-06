@@ -38,8 +38,10 @@ CTexture text_atras;
 
 //texturas casa
 CTexture ladrillo;
+CTexture ladrillo_f;
 CTexture teja;
 CTexture tapiz;
+CTexture tapiz_F;
 CTexture piso;
 CTexture tapete;
 CTexture mapa;
@@ -105,17 +107,25 @@ void InitGL(GLvoid)     // Inicializamos parametros
 	text_abajo.BuildGLTexture();
 	text_abajo.ReleaseImage();
 
-	ladrillo.LoadTGA("lad.tga"); //textura de la fachada
+	ladrillo_f.LoadTGA("br3.tga"); //textura de la fachada FRENTE
+	ladrillo_f.BuildGLTexture();
+	ladrillo_f.ReleaseImage();
+
+	ladrillo.LoadTGA("br.tga"); //textura de la fachada 
 	ladrillo.BuildGLTexture();
 	ladrillo.ReleaseImage();
 
-	teja.LoadTGA("tej.tga"); //textura de la fachada
+	teja.LoadTGA("tile2.tga"); //textura de la fachada
 	teja.BuildGLTexture();
 	teja.ReleaseImage();
 
 	tapiz.LoadTGA("tapiz.tga"); //textura de la fachada
 	tapiz.BuildGLTexture();
 	tapiz.ReleaseImage();
+
+	tapiz_F.LoadTGA("tapiz_F.tga"); //textura de la fachada
+	tapiz_F.BuildGLTexture();
+	tapiz_F.ReleaseImage();
 
 	piso.LoadTGA("piso_mad.tga"); //textura de la fachada
 	piso.BuildGLTexture();
@@ -129,6 +139,8 @@ void InitGL(GLvoid)     // Inicializamos parametros
 	mapa.BuildGLTexture();
 	mapa.ReleaseImage();
 	
+	soporte._3dsLoad("sop.3ds");
+
 	objCamera.Position_Camera(-10, 15, 50, -10, 0, 0, 0, 1, 0);
 
 }
@@ -212,6 +224,17 @@ void display(void)   // Creamos la funcion donde se dibuja
 			fig1.prisma(10, 14, 0.1, tapete.GLindex,1,1);
 		glPopMatrix();
 
+		glPushMatrix(); //Pared frente
+		fig1.prisma(44, 62, 0.2, ladrillo_f.GLindex);
+		glPopMatrix();
+
+		glPushMatrix(); //Tapíz frente
+		
+		glTranslatef(-15.5, 11, -0.2);
+		glRotatef(180, 0, 1, 0);
+		fig1.prisma(22, 31, 0.2, tapiz_F.GLindex,1,1);
+		glPopMatrix();
+
 		glDisable(GL_ALPHA_TEST);
 
 		glPushMatrix(); //globo
@@ -239,42 +262,42 @@ void display(void)   // Creamos la funcion donde se dibuja
 			glTranslatef(-31+1, 14.0, -8);
 			glScalef(0.01, 0.003, 0.003);
 			glRotatef(90, 0, 1, 0);
-			soporte.GLrender(NULL, _SHADED, 1.0);  //_WIRED O _POINTS
+			soporte.GLrender(NULL, _SHADED, 1.0);  
 		glPopMatrix();
 
 		glPushMatrix(); //corbel1.2
 			glTranslatef(-31 + 1, 14.0, -16);
 			glScalef(0.01, 0.003, 0.003);
 			glRotatef(90, 0, 1, 0);
-			soporte.GLrender(NULL, _SHADED, 1.0);  //_WIRED O _POINTS
+			soporte.GLrender(NULL, _SHADED, 1.0);  
 		glPopMatrix();
 
 		glPushMatrix(); //corbel2.1
 			glTranslatef(-31 + 1, 16.5, -8);
 			glScalef(0.01, 0.003, 0.003);
 			glRotatef(90, 0, 1, 0);
-			soporte.GLrender(NULL, _SHADED, 1.0);  //_WIRED O _POINTS
+			soporte.GLrender(NULL, _SHADED, 1.0);  
 		glPopMatrix();
 
 		glPushMatrix(); //corbel2.2
 			glTranslatef(-31 + 1, 16.5, -16);
 			glScalef(0.01, 0.003, 0.003);
 			glRotatef(90, 0, 1, 0);
-			soporte.GLrender(NULL, _SHADED, 1.0);  //_WIRED O _POINTS
+			soporte.GLrender(NULL, _SHADED, 1.0);  
 		glPopMatrix();
 
 		glPushMatrix(); //corbel3.1
 			glTranslatef(-31 + 1, 11.5, -8);
 			glScalef(0.01, 0.003, 0.003);
 			glRotatef(90, 0, 1, 0);
-			soporte.GLrender(NULL, _SHADED, 1.0);  //_WIRED O _POINTS
+			soporte.GLrender(NULL, _SHADED, 1.0);  
 		glPopMatrix();
 
 		glPushMatrix(); //corbel3.2
 			glTranslatef(-31 + 1, 11.5, -16);
 			glScalef(0.01, 0.003, 0.003);
 			glRotatef(90, 0, 1, 0);
-			soporte.GLrender(NULL, _SHADED, 1.0);  //_WIRED O _POINTS
+			soporte.GLrender(NULL, _SHADED, 1.0);  
 		glPopMatrix();
 
 		glPushMatrix(); //repisa1
@@ -325,17 +348,6 @@ void display(void)   // Creamos la funcion donde se dibuja
 		glPushMatrix(); //Tapiz atrás
 			glTranslatef(-15.5, 11, -40+0.2);
 			fig1.prisma(22, 31, 0.2, tapiz.GLindex);
-		glPopMatrix();
-
-		glPushMatrix(); //Tapíz frente
-			glTranslatef(-15.5, 11, -0.2);
-			fig1.prisma(22, 31, 0.2, tapiz.GLindex);
-		glPopMatrix();
-
-
-
-		glPushMatrix(); //Pared frente
-			fig1.prisma(44, 62, 0.2, ladrillo.GLindex);
 		glPopMatrix();
 
 		glPushMatrix(); //Pared atrás

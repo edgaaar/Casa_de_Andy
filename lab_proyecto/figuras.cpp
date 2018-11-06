@@ -182,10 +182,10 @@ void CFiguras::prisma(float altura, float largo, float profundidad, GLuint text,
 	glBegin(GL_POLYGON);	//Back
 		//glColor3f(0.0,1.0,0.0);
 	glNormal3f(0.0f, 0.0f, -1.0f);
-	glTexCoord2f(0.0f, 1.0f); glVertex3fv(vertice[6]);
-	glTexCoord2f(1.0f, 1.0f); glVertex3fv(vertice[5]);
-	glTexCoord2f(1.0f, 0.0f); glVertex3fv(vertice[3]);
-	glTexCoord2f(0.0f, 0.0f); glVertex3fv(vertice[2]);
+	glTexCoord2f(0.0f, 1.0f); //glVertex3fv(vertice[6]);
+	glTexCoord2f(1.0f, 1.0f); //glVertex3fv(vertice[5]);
+	glTexCoord2f(1.0f, 0.0f); //glVertex3fv(vertice[3]);
+	glTexCoord2f(0.0f, 0.0f); //glVertex3fv(vertice[2]);
 	glEnd();
 
 	glBegin(GL_POLYGON);  //Left
