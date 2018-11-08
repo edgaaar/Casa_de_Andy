@@ -45,6 +45,7 @@ CTexture tapiz_F;
 CTexture piso;
 CTexture tapete;
 CTexture mapa;
+CTexture asfalto;
 
 CFiguras fig1;
 CFiguras fig2;
@@ -83,27 +84,27 @@ void InitGL(GLvoid)     // Inicializamos parametros
 	/* setup blending */
 	glEnable(GL_BLEND);			// Turn Blending On
 
-	text_atras.LoadTGA("sorbin_bk.tga"); //textura del cubo
+	text_atras.LoadTGA("posz.tga"); //textura del cubo
 	text_atras.BuildGLTexture();
 	text_atras.ReleaseImage();
 
-	text_frente.LoadTGA("sorbin_ft.tga"); //textura del cubo
+	text_frente.LoadTGA("negz.tga"); //textura del cubo
 	text_frente.BuildGLTexture();
 	text_frente.ReleaseImage();
 
-	text_izquierda.LoadTGA("sorbin_lf.tga"); //textura del cubo
+	text_izquierda.LoadTGA("negx.tga"); //textura del cubo
 	text_izquierda.BuildGLTexture();
 	text_izquierda.ReleaseImage();
 
-	text_derecha.LoadTGA("sorbin_rt.tga"); //textura del cubo
+	text_derecha.LoadTGA("posx.tga"); //textura del cubo
 	text_derecha.BuildGLTexture();
 	text_derecha.ReleaseImage();
 
-	text_arriba.LoadTGA("sorbin_up.tga"); //textura del cubo
+	text_arriba.LoadTGA("posy.tga"); //textura del cubo
 	text_arriba.BuildGLTexture();
 	text_arriba.ReleaseImage();
 
-	text_abajo.LoadTGA("sorbin_dn.tga"); //textura del cubo
+	text_abajo.LoadTGA("negy.tga"); //textura del cubo
 	text_abajo.BuildGLTexture();
 	text_abajo.ReleaseImage();
 
@@ -138,11 +139,14 @@ void InitGL(GLvoid)     // Inicializamos parametros
 	mapa.LoadTGA("map.tga"); //textura de la fachada
 	mapa.BuildGLTexture();
 	mapa.ReleaseImage();
+
+	asfalto.LoadTGA("asp.tga"); //textura de la fachada
+	asfalto.BuildGLTexture();
+	asfalto.ReleaseImage();
 	
 	soporte._3dsLoad("sop.3ds");
 
 	objCamera.Position_Camera(-10, 15, 50, -10, 0, 0, 0, 1, 0);
-
 }
 
 void pintaTexto(float x, float y, float z, void *font, char *string)
@@ -177,13 +181,15 @@ void display(void)   // Creamos la funcion donde se dibuja
 	glPushMatrix();
 		glPushMatrix(); //Creamos cielo
 			glDisable(GL_LIGHTING);
-			glTranslatef(0, 90 - (22 * 0.8), 0);
-			fig1.skybox(180.0, 520.0, 520.0, text_abajo.GLindex, text_arriba.GLindex, text_izquierda.GLindex, text_derecha.GLindex, text_frente.GLindex, text_atras.GLindex); //textura del cubo
+			glTranslatef(0, 50 - (22 * 0.8), 0);
+			fig1.skybox(100.0, 300.0, 200.0, text_abajo.GLindex, text_arriba.GLindex, text_izquierda.GLindex, text_derecha.GLindex, text_frente.GLindex, text_atras.GLindex); //textura del cubo
 			glEnable(GL_LIGHTING);
 		glPopMatrix();
 		//Para que el comando glColor funcione con iluminacion
 		glEnable(GL_COLOR_MATERIAL);
 		//glColor3f(1.0, 1.0, 1.0);
+
+		
 
 		//Plano cartesiano
 		glColor3f(0, 0, 0);
@@ -222,6 +228,12 @@ void display(void)   // Creamos la funcion donde se dibuja
 			glTranslatef(-15.5, 0.1, -15);
 			glRotatef(90, 1, 0, 0);
 			fig1.prisma(10, 14, 0.1, tapete.GLindex,1,1);
+		glPopMatrix();
+
+		glPushMatrix(); //Base asfalto
+		glTranslatef(20, -22 + 0.1, -30);
+		glRotatef(90, 1, 0, 0);
+		fig1.prisma(120, 160, 0.1, asfalto.GLindex);
 		glPopMatrix();
 
 		glPushMatrix(); //Pared frente
