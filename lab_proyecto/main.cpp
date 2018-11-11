@@ -39,9 +39,13 @@ CTexture text_atras;
 //texturas casa
 CTexture ladrillo;
 CTexture ladrillo_f;
+CTexture pared_der;
+CTexture pared_izq;
+CTexture gar_frente;
 CTexture teja;
 CTexture tapiz;
 CTexture tapiz_F;
+CTexture tapiz_D;
 CTexture piso;
 CTexture tapete;
 CTexture mapa;
@@ -116,6 +120,14 @@ void InitGL(GLvoid)     // Inicializamos parametros
 	ladrillo.BuildGLTexture();
 	ladrillo.ReleaseImage();
 
+	pared_der.LoadTGA("br_der.tga"); //textura de la fachada 
+	pared_der.BuildGLTexture();
+	pared_der.ReleaseImage();
+
+	pared_izq.LoadTGA("br_izq.tga"); //textura de la fachada 
+	pared_izq.BuildGLTexture();
+	pared_izq.ReleaseImage();
+
 	teja.LoadTGA("tile2.tga"); //textura de la fachada
 	teja.BuildGLTexture();
 	teja.ReleaseImage();
@@ -127,6 +139,10 @@ void InitGL(GLvoid)     // Inicializamos parametros
 	tapiz_F.LoadTGA("tapiz_F.tga"); //textura de la fachada
 	tapiz_F.BuildGLTexture();
 	tapiz_F.ReleaseImage();
+
+	tapiz_D.LoadTGA("tapiz_D.tga"); //textura de la fachada
+	tapiz_D.BuildGLTexture();
+	tapiz_D.ReleaseImage();
 
 	piso.LoadTGA("piso_mad.tga"); //textura de la fachada
 	piso.BuildGLTexture();
@@ -181,8 +197,8 @@ void display(void)   // Creamos la funcion donde se dibuja
 	glPushMatrix();
 		glPushMatrix(); //Creamos cielo
 			glDisable(GL_LIGHTING);
-			glTranslatef(0, 50 - (22 * 0.8), 0);
-			fig1.skybox(100.0, 300.0, 200.0, text_abajo.GLindex, text_arriba.GLindex, text_izquierda.GLindex, text_derecha.GLindex, text_frente.GLindex, text_atras.GLindex); //textura del cubo
+			glTranslatef(0, 100 - (22 * 0.8), 0);
+			fig1.skybox(200.0, 300.0, 300.0, text_abajo.GLindex, text_arriba.GLindex, text_izquierda.GLindex, text_derecha.GLindex, text_frente.GLindex, text_atras.GLindex); //textura del cubo
 			glEnable(GL_LIGHTING);
 		glPopMatrix();
 		//Para que el comando glColor funcione con iluminacion
@@ -196,7 +212,7 @@ void display(void)   // Creamos la funcion donde se dibuja
 
 		fig1.prisma(1, 1, 1, 0);
 
-		/*
+		
 		glPushMatrix();
 		glTranslatef(0, 25, 0);
 		glColor3f(1, 0, 0);
@@ -214,7 +230,7 @@ void display(void)   // Creamos la funcion donde se dibuja
 		glColor3f(0, 0, 1);
 		fig1.prisma(0.5, 0.5, 50, 0); //x
 		glPopMatrix();
-		*/
+		
 		glColor3f(1, 1, 1);
 		//Traslación y escalamiento global
 		//glTranslatef(0, -90+ (22*0.8), 0);
@@ -225,15 +241,17 @@ void display(void)   // Creamos la funcion donde se dibuja
 
 
 		glPushMatrix(); //tapete
-			glTranslatef(-15.5, 0.1, -15);
+			glTranslatef(-15.5, 0.2, -15);
+			glRotatef(180, 0, 0, 1);
 			glRotatef(90, 1, 0, 0);
 			fig1.prisma(10, 14, 0.1, tapete.GLindex,1,1);
 		glPopMatrix();
 
 		glPushMatrix(); //Base asfalto
-		glTranslatef(20, -22 + 0.1, -30);
-		glRotatef(90, 1, 0, 0);
-		fig1.prisma(120, 160, 0.1, asfalto.GLindex);
+			glTranslatef(20, -22 + 0.1, -30);
+			glRotatef(180, 0, 0, 1);
+			glRotatef(90, 1, 0, 0);
+			fig1.prisma(120, 160, 0.1, asfalto.GLindex);
 		glPopMatrix();
 
 		glPushMatrix(); //Pared frente
@@ -245,6 +263,25 @@ void display(void)   // Creamos la funcion donde se dibuja
 		glTranslatef(-15.5, 11, -0.2);
 		glRotatef(180, 0, 1, 0);
 		fig1.prisma(22, 31, 0.2, tapiz_F.GLindex,1,1);
+		glPopMatrix();
+
+		glPushMatrix(); //Tapiz izq
+		glTranslatef(-31 + 0.2, 11, -20);
+		glRotatef(90, 0, 1, 0);
+		fig1.prisma(22, 40, 0.2, tapiz_D.GLindex,1,1);
+		glPopMatrix();
+
+		glPushMatrix(); //Pared izq
+		glTranslatef(-31 - 0.2, 7.5, -20);
+		glRotatef(180, 0, 1, 0);
+		glRotatef(-90, 0, 1, 0);
+		fig1.prisma(44 + 15, 40, 0.2, pared_izq.GLindex, 1 ,1);
+		glPopMatrix();
+
+		glPushMatrix(); //Pared der
+		glTranslatef(31, 7.5, -20);
+		glRotatef(90, 0, 1, 0);
+		fig1.prisma(44 + 15, 40, 0.2, pared_der.GLindex, 1, 1);
 		glPopMatrix();
 
 		glDisable(GL_ALPHA_TEST);
@@ -271,63 +308,63 @@ void display(void)   // Creamos la funcion donde se dibuja
 		glPopMatrix();
 
 		glPushMatrix(); //corbel1.1
-			glTranslatef(-31+1, 14.0, -8);
+			glTranslatef(-31+1, 14.0, -8-5);
 			glScalef(0.01, 0.003, 0.003);
 			glRotatef(90, 0, 1, 0);
 			soporte.GLrender(NULL, _SHADED, 1.0);  
 		glPopMatrix();
 
 		glPushMatrix(); //corbel1.2
-			glTranslatef(-31 + 1, 14.0, -16);
+			glTranslatef(-31 + 1, 14.0, -16-5);
 			glScalef(0.01, 0.003, 0.003);
 			glRotatef(90, 0, 1, 0);
 			soporte.GLrender(NULL, _SHADED, 1.0);  
 		glPopMatrix();
 
 		glPushMatrix(); //corbel2.1
-			glTranslatef(-31 + 1, 16.5, -8);
+			glTranslatef(-31 + 1, 16.5, -8-5);
 			glScalef(0.01, 0.003, 0.003);
 			glRotatef(90, 0, 1, 0);
 			soporte.GLrender(NULL, _SHADED, 1.0);  
 		glPopMatrix();
 
 		glPushMatrix(); //corbel2.2
-			glTranslatef(-31 + 1, 16.5, -16);
+			glTranslatef(-31 + 1, 16.5, -16-5);
 			glScalef(0.01, 0.003, 0.003);
 			glRotatef(90, 0, 1, 0);
 			soporte.GLrender(NULL, _SHADED, 1.0);  
 		glPopMatrix();
 
 		glPushMatrix(); //corbel3.1
-			glTranslatef(-31 + 1, 11.5, -8);
+			glTranslatef(-31 + 1, 11.5, -8-5);
 			glScalef(0.01, 0.003, 0.003);
 			glRotatef(90, 0, 1, 0);
 			soporte.GLrender(NULL, _SHADED, 1.0);  
 		glPopMatrix();
 
 		glPushMatrix(); //corbel3.2
-			glTranslatef(-31 + 1, 11.5, -16);
+			glTranslatef(-31 + 1, 11.5, -16-5);
 			glScalef(0.01, 0.003, 0.003);
 			glRotatef(90, 0, 1, 0);
 			soporte.GLrender(NULL, _SHADED, 1.0);  
 		glPopMatrix();
 
 		glPushMatrix(); //repisa1
-			glTranslatef(-31+1.5, 15, -12);
+			glTranslatef(-31+1.5, 15, -12 - 5);
 			glRotatef(90, 0, 1, 0);
 			glRotatef(90, 1, 0, 0);
 			fig1.prisma(3, 10, 0.5, 0);
 		glPopMatrix();
 
 		glPushMatrix(); //repisa2
-			glTranslatef(-31+1.5, 17.5, -12);
+			glTranslatef(-31+1.5, 17.5, -12 - 5);
 			glRotatef(90, 0, 1, 0);
 			glRotatef(90, 1, 0, 0);
 			fig1.prisma(3, 10, 0.5, 0);
 		glPopMatrix();
 
 		glPushMatrix(); //repisa3
-			glTranslatef(-31+1.5, 12.5, -12);
+			glTranslatef(-31+1.5, 12.5, -12 - 5);
 			glRotatef(90, 0, 1, 0);
 			glRotatef(90, 1, 0, 0);
 			fig1.prisma(3, 10, 0.5, 0);
@@ -351,11 +388,7 @@ void display(void)   // Creamos la funcion donde se dibuja
 			fig1.prisma(22, 40, 0.2, tapiz.GLindex);
 		glPopMatrix();
 
-		glPushMatrix(); //Tapiz izq
-			glTranslatef(-31 + 0.2, 11, -20);
-			glRotatef(90, 0, 1, 0);
-			fig1.prisma(22, 40, 0.2, tapiz.GLindex);
-		glPopMatrix();
+
 
 		glPushMatrix(); //Tapiz atrás
 			glTranslatef(-15.5, 11, -40+0.2);
@@ -367,17 +400,7 @@ void display(void)   // Creamos la funcion donde se dibuja
 			fig1.prisma(44, 62, 0.2, ladrillo.GLindex);
 		glPopMatrix();
 
-		glPushMatrix(); //Pared izq
-			glTranslatef(-31, 0, -20);
-			glRotatef(-90, 0, 1, 0);
-			fig1.prisma(44, 40, 0.2, ladrillo.GLindex);
-		glPopMatrix();
-
-		glPushMatrix(); //Pared der
-			glTranslatef(31, 0, -20);
-			glRotatef(90, 0, 1, 0);
-			fig1.prisma(44, 40, 0.2, ladrillo.GLindex);
-		glPopMatrix();
+		
 
 		glPushMatrix(); //Teja frente
 			glTranslatef(0, 22 + 7.5, -10);
