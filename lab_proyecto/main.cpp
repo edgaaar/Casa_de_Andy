@@ -39,6 +39,7 @@ CTexture text_atras;
 //texturas casa
 CTexture ladrillo;
 CTexture ladrillo_f;
+CTexture gar_derecha;
 CTexture pared_der;
 CTexture pared_izq;
 CTexture gar_frente;
@@ -159,7 +160,15 @@ void InitGL(GLvoid)     // Inicializamos parametros
 	asfalto.LoadTGA("asp.tga"); //textura de la fachada
 	asfalto.BuildGLTexture();
 	asfalto.ReleaseImage();
-	
+
+	gar_derecha.LoadTGA("coche_D.tga"); //textura de la fachada
+	gar_derecha.BuildGLTexture();
+	gar_derecha.ReleaseImage();
+
+	gar_frente.LoadTGA("coche_F.tga"); //textura de la fachada
+	gar_frente.BuildGLTexture();
+	gar_frente.ReleaseImage();
+
 	soporte._3dsLoad("sop.3ds");
 
 	objCamera.Position_Camera(-10, 15, 50, -10, 0, 0, 0, 1, 0);
@@ -421,13 +430,13 @@ void display(void)   // Creamos la funcion donde se dibuja
 			glTranslatef(31 + 14, -22 + 12.5,0);
 			glScalef(0.4516129, 0.5681818181, 1);
 			//glScalef(28 / 62, 25 / 44, 1);
-
+			
 			glPushMatrix();
-				glPushMatrix(); //Pared atrás cochera
-				fig1.prisma(44, 62, 0.2, ladrillo.GLindex);
+				glPushMatrix(); //Pared frente cochera
+				fig1.prisma(44, 62, 0.2, gar_frente.GLindex);
 				glPopMatrix();
 
-				glPushMatrix(); //Pared frente cochera
+				glPushMatrix(); //Pared atrás cochera
 				glTranslatef(0, 0, -40);
 				fig1.prisma(44, 62, 0.2, ladrillo.GLindex);
 				glPopMatrix();
@@ -438,11 +447,16 @@ void display(void)   // Creamos la funcion donde se dibuja
 				fig1.prisma(44, 40, 0.2, ladrillo.GLindex);
 				glPopMatrix();
 
+				glEnable(GL_ALPHA_TEST);
+				glAlphaFunc(GL_GREATER, 0.1f);
+
 				glPushMatrix(); //Pared der cochera
-				glTranslatef(31, 0, -20);
+				glTranslatef(31, 7.5, -20);
 				glRotatef(90, 0, 1, 0);
-				fig1.prisma(44, 40, 0.2, ladrillo.GLindex);
+				fig1.prisma(44+15, 40, 0.2, gar_derecha.GLindex,1,1);
 				glPopMatrix();
+
+				glDisable(GL_ALPHA_TEST);
 
 				glPushMatrix(); //Teja frente cochera
 				glTranslatef(0, 22 + 7.5, -10);
