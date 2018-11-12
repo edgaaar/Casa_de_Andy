@@ -62,15 +62,10 @@ CTexture ca_1;
 CTexture ca_2;
 
 CFiguras fig1;
-CFiguras fig2;
-CFiguras fig3;
-CFiguras fig4;	//Pasto01
-CFiguras fig5;	//Casa01
-CFiguras fig6;
 
 //Figuras de 3D Studio
 CModel soporte;
-CModel lamp;
+CModel alm;
 void InitGL(GLvoid)     // Inicializamos parametros
 {
 	/*ANTERIOR*/
@@ -233,7 +228,7 @@ void InitGL(GLvoid)     // Inicializamos parametros
 	ca_2.ReleaseImage();
 
 	soporte._3dsLoad("sop.3ds");
-	lamp._3dsLoad("lmp005.3ds");
+	alm._3dsLoad("Pillow_Set.3DS");
 
 	objCamera.Position_Camera(-10, 15, 50, -10, 0, 0, 0, 1, 0);
 }
@@ -381,10 +376,17 @@ void display(void)   // Creamos la funcion donde se dibuja
 		glPopMatrix();
 
 		glPushMatrix(); //cama
-		glTranslatef(-10+4, 2, -35);
-		glRotatef(180, 0, 1, 0);
-		fig1.prisma(4, 10, 6, ca_2.GLindex, ca_2.GLindex, ca_2.GLindex, ca_2.GLindex,ca_1.GLindex, ca_2.GLindex);
+			glTranslatef(-10+4, 2, -35);
+			glRotatef(180, 0, 1, 0);
+			fig1.prisma(4, 10, 6, ca_2.GLindex, ca_2.GLindex, ca_2.GLindex, ca_2.GLindex,ca_1.GLindex, ca_2.GLindex);
 		glPopMatrix();
+
+		/*glPushMatrix(); //almohadas
+			glTranslatef(-3, 4.0, -35);
+			glScalef(0.01, 0.006, 0.005);
+			glRotatef(270, 0, 1, 0);
+			alm.GLrender(NULL, _SHADED, 1.0);
+		glPopMatrix();*/
 
 		glPushMatrix(); //corbel1.1
 			glTranslatef(-31+1, 14.0, -8-5);
@@ -626,7 +628,7 @@ void display(void)   // Creamos la funcion donde se dibuja
 
 void animacion()
 {
-	var++;
+	var+=1;
 	glutPostRedisplay();
 }
 
@@ -730,7 +732,7 @@ int main(int argc, char** argv)   // Main Function
 	glutKeyboardFunc(keyboard);	//Indicamos a Glut función de manejo de teclado
 	glutSpecialFunc(arrow_keys);	//Otras
 	glutIdleFunc(animacion);
-	glutMainLoop();          // 
+	glutMainLoop();          /
 
 	return 0;
 }
