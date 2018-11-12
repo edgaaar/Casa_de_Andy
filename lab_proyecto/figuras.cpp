@@ -138,7 +138,7 @@ void CFiguras::prisma (float altura, float largo, float profundidad, GLuint text
 
 		glBegin(GL_POLYGON);  //Top
 			//glColor3f(0.8,0.2,0.4);
-			glNormal3f( 0.0f, -1.0f, 0.0f);
+			glNormal3f( 0.0f, 1.0f, 0.0f);
 			glTexCoord2f(0.0f, 0.0f); glVertex3fv(vertice[4]);
 			glTexCoord2f(1.0f, 0.0f); glVertex3fv(vertice[5]);
 			glTexCoord2f(1.0f, 1.0f); glVertex3fv(vertice[6]);
@@ -214,7 +214,7 @@ void CFiguras::prisma(float altura, float largo, float profundidad, GLuint text_
 	glBindTexture(GL_TEXTURE_2D, text_arr);   // choose the texture to use.
 	glBegin(GL_POLYGON);  //Top
 		//glColor3f(0.8,0.2,0.4);
-	glNormal3f(0.0f, -1.0f, 0.0f);
+	glNormal3f(0.0f, 1.0f, 0.0f);
 	glTexCoord2f(0.0f, 0.0f); glVertex3fv(vertice[4]);
 	glTexCoord2f(1.0f, 0.0f); glVertex3fv(vertice[5]);
 	glTexCoord2f(1.0f, 1.0f); glVertex3fv(vertice[6]);
@@ -240,7 +240,8 @@ void CFiguras::prisma(float altura, float largo, float profundidad, GLuint text,
 	glBindTexture(GL_TEXTURE_2D, text);   // choose the texture to use.
 	glBegin(GL_POLYGON);	//Front
 		//glColor3f(0.0,0.0,1.0);
-	glNormal3f(0.0f, 0.0f, -1.0f);
+	glNormal3f(1.0f, 0.0f, 0.0f);
+	glNormal3f(0.0f, -1.0f, 0.0f);
 	glNormal3f(0.0f, 0.0f, 1.0f);
 	glTexCoord2f(0.0f, 0.0f); glVertex3fv(vertice[0]);
 	glTexCoord2f(0.0f, 1.0f); glVertex3fv(vertice[4]);
@@ -704,14 +705,14 @@ void CFiguras::cilindro(float radio, float altura, int resolucion, GLuint text)
 			glVertex3fv(v5);
 		glEnd();
 
-		/*glBegin(GL_POLYGON);
+		glBegin(GL_POLYGON);
 			glBindTexture(GL_TEXTURE_2D, text);
 			glNormal3f( v2[0], 0.0f, v2[2]);
 			glTexCoord2f(ctext_s*i, 0.0f);		glVertex3fv(v2);
 			glTexCoord2f(ctext_s*(i+1), 0.0f);	glVertex3fv(v3);
 			glTexCoord2f(ctext_s*(i+1), 1.0f);	glVertex3fv(v5);
 			glTexCoord2f(ctext_s*i, 1.0f);		glVertex3fv(v4);
-		glEnd();*/
+		glEnd();
 		glBegin(GL_POLYGON);
 			glNormal3f( v2[0], 0.0f, v2[2]);
 			glVertex3fv(v2);

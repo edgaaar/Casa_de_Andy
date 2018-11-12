@@ -55,6 +55,9 @@ CTexture mad_1;
 CTexture mad_2;
 CTexture bau_1;
 CTexture bau_2;
+CTexture mu_1;
+CTexture ca_1;
+CTexture ca_2;
 
 CFiguras fig1;
 CFiguras fig2;
@@ -217,6 +220,18 @@ void InitGL(GLvoid)     // Inicializamos parametros
 	bau_2.BuildGLTexture();
 	bau_2.ReleaseImage();
 
+	mu_1.LoadTGA("mu1.tga"); //textura de la fachada
+	mu_1.BuildGLTexture();
+	mu_1.ReleaseImage();
+
+	ca_1.LoadTGA("ca1.tga"); //textura de la fachada
+	ca_1.BuildGLTexture();
+	ca_1.ReleaseImage();
+
+	ca_2.LoadTGA("ca2.tga"); //textura de la fachada
+	ca_2.BuildGLTexture();
+	ca_2.ReleaseImage();
+
 	soporte._3dsLoad("sop.3ds");
 	lamp._3dsLoad("lmp005.3ds");
 
@@ -347,27 +362,24 @@ void display(void)   // Creamos la funcion donde se dibuja
 			gluSphere(quad, 1.5, 20, 20);
 		glPopMatrix();
 
-		glPushMatrix(); //baúl
+		glPushMatrix(); //baúl-caja
 			glTranslatef(-17.5+4, 1.775, -35);
 			glRotatef(90, 0, 1, 0);
 			fig1.prisma(3.55, 6, 3.3, bau_1.GLindex,bau_2.GLindex,bau_2.GLindex,bau_1.GLindex,0,0);
 			//fig1.prisma(3.55, 6, 3.3, bau_1.GLindex);
+		glPopMatrix(); 
+		
+		glPushMatrix(); //baúl-tapa
+		glTranslatef(-17.5 + 4, 1.775, -35);
+		fig1.cilindro(1, 4, 10, bau_1.GLindex);
+		//fig1.prisma(3.55, 6, 3.3, bau_1.GLindex);
 		glPopMatrix();
 
 		glPushMatrix(); //cama
 		glTranslatef(-10+4, 2, -35);
-		glRotatef(90, 0, 1, 0);
-		fig1.prisma(4, 6, 10, 0);
+		glRotatef(180, 0, 1, 0);
+		fig1.prisma(4, 10, 6, ca_2.GLindex, ca_2.GLindex, ca_2.GLindex, ca_2.GLindex,ca_1.GLindex, ca_2.GLindex);
 		glPopMatrix();
-
-		/*glPushMatrix(); //lámpara
-		glDisable(GL_COLOR_MATERIAL);
-			glTranslatef(-21 + 1, 10.0, 15);
-			glScalef(0.05, 0.03, 0.03);
-			glRotatef(90, 0, 1, 0);
-			lamp.GLrender(NULL, _SHADED, 1.0);
-		glPopMatrix();
-		glEnable(GL_COLOR_MATERIAL);*/
 
 		glPushMatrix(); //corbel1.1
 			glTranslatef(-31+1, 14.0, -8-5);
@@ -458,8 +470,8 @@ void display(void)   // Creamos la funcion donde se dibuja
 			glPushMatrix(); //soporte
 			glTranslatef(1.5, 2.7, -1.5);
 			glRotatef(-90, 0, 1, 0);
-			glRotatef(180, 1, 0, 0);
-			fig1.prisma(1, 4, 4, mad_2.GLindex, mad_2.GLindex, mad_2.GLindex, 0, mad_2.GLindex, mad_2.GLindex);
+			glRotatef(180, 0, 1, 0);
+			fig1.prisma(1, 4, 4, mad_2.GLindex);
 			glPopMatrix();
 		glPopMatrix();
 
@@ -491,8 +503,9 @@ void display(void)   // Creamos la funcion donde se dibuja
 
 			glPushMatrix(); //cajones
 			glTranslatef(1.5, 3.75, -1.5);
-			glRotatef(180, 1, 0, 0);
-			fig1.prisma(7, 4, 3, mad_1.GLindex, mad_1.GLindex, mad_1.GLindex, 0, mad_1.GLindex, mad_1.GLindex);
+			glRotatef(180, 0, 1, 0);
+			//glRotatef(180, 1,0, 0);
+			fig1.prisma(7, 4, 3, mad_1.GLindex, mad_1.GLindex, mad_1.GLindex, mu_1.GLindex, mad_1.GLindex, mad_1.GLindex);
 			glPopMatrix();
 		glPopMatrix();
 
