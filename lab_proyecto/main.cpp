@@ -26,6 +26,8 @@ GLfloat m_s1[] = { 18 };
 
 //Para el globo//////
 GLUquadric *quad;
+GLUquadric *quad2;
+
 /////////////
 
 //texturas skybox
@@ -65,8 +67,6 @@ CFiguras fig3;
 CFiguras fig4;	//Pasto01
 CFiguras fig5;	//Casa01
 CFiguras fig6;
-
-CFiguras fig7; //Para el monito
 
 //Figuras de 3D Studio
 CModel soporte;
@@ -366,13 +366,18 @@ void display(void)   // Creamos la funcion donde se dibuja
 			glTranslatef(-17.5+4, 1.775, -35);
 			glRotatef(90, 0, 1, 0);
 			fig1.prisma(3.55, 6, 3.3, bau_1.GLindex,bau_2.GLindex,bau_2.GLindex,bau_1.GLindex,0,0);
-			//fig1.prisma(3.55, 6, 3.3, bau_1.GLindex);
 		glPopMatrix(); 
-		
-		glPushMatrix(); //baúl-tapa
-		glTranslatef(-17.5 + 4, 1.775, -35);
-		fig1.cilindro(1, 4, 10, bau_1.GLindex);
-		//fig1.prisma(3.55, 6, 3.3, bau_1.GLindex);
+
+		glPushMatrix(); //tapa-baul
+
+		glTranslatef(-17.5+4, 3, -38);
+		quad2 = gluNewQuadric();
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, mad_1.GLindex);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		gluQuadricTexture(quad2, 1);
+
+		gluCylinder(quad2, 1.7, 1.7, 6, 10, 10);
 		glPopMatrix();
 
 		glPushMatrix(); //cama
